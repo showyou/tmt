@@ -9,7 +9,7 @@ sys.path.insert(
 def test_toDate():
     import datetime
     import toDate2
-    date = "Sat Dec 22 01:07:16 +0000 2007"
+    date = "2008-02-24T06:39:37+00:00"
     date2 = toDate2.toDate2(date)
     if str(date2).startswith("2007-12-22 10:07:16"):
         return True
