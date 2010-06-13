@@ -8,7 +8,7 @@ import os
 if False:
 	homePath = "./"
 else:
-	homePath = os.path.abspath(os.path.dirname(__file__)))
+	homePath = os.path.abspath(os.path.dirname(__file__))
 
 def sendTmt(userName,toMail):
 	# 引数 ユーザ名 メールアドレス
@@ -51,11 +51,5 @@ def sendTmt(userName,toMail):
 	msg = mail.create_message2(from_addr, to_addr, title, outSentence, 'ISO-2022-JP')
 	mail.send_via_gmail(user,passWord,from_addr, to_addr, msg)
 	
-if __name__ == '__main__':
-	import sys
-	if len(sys.argv) < 3:
-		print "usage tmt.py user mail"
-		print "use test mode"	
-		sendTmt("ha_ma","showyou41@gmail.com")
-		exit()
-	sendTmt(sys.argv[1],sys.argv[2])
+if _name__ == '__main__':
+
