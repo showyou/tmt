@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 # 今日の自分の1日の行動を取得します
 import twitter3,jsonfile,traceback,toDate,datetime,mail
+import os
 
 #if True:
 if False:
 	homePath = "./"
 else:
-	homePath = "/home/yuki/gitrep/python/tmt/"
+	homePath = os.path.abspath(os.path.dirname(__file__)))
 
 def sendTmt(userName,toMail):
 	# 引数 ユーザ名 メールアドレス
