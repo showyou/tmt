@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # 今日の自分の1日の行動を取得します
-import auth_api,jsonfile,traceback,toDate,datetime,mail
+import auth_api,jsonfile,traceback,toDate3,datetime,mail
 import os
 
 #if True:
 if False:
-    homePath = "./"
+    homePath = "."
 else:
     homePath = os.path.abspath(os.path.dirname(__file__))
 
@@ -14,8 +14,8 @@ def sendTmt(userName,toMail):
     # 引数 ユーザ名 メールアドレス
     getUser = userName
     print sendTmt, userName, toMail
-    userdata = jsonfile.read(homePath+"user/twdata_hama")
-    tw = auth_api.connect(userdata)
+    conf = auth_api.loadJSON(homePath+"/config.json")
+    tw = auth_api.connect(conf["consumer_token"], conf["consumer_secret"])
     latestTime = datetime.datetime.today()-datetime.timedelta(days=1)
     pageNum = 50
     
@@ -26,14 +26,14 @@ def sendTmt(userName,toMail):
         flag = True
         for i in range(pageNum):
             if flag != True : break
-            for t in tw.ユーザページ開く(getUser,i+1):
-                td = toDate.toDate(t["時刻とか"])
+            for t in tw.user_timeline(getUser,page = i):
+                td = toDate3.toDate3(t.created_at)
                 if td - latestTime < datetime.timedelta(days =0) :
                     flag = False
                     break
                 #if t[0].startswith("@") or t[0].startswith(".@"):
                 #	continue
-                s = unicode(t["発言とか"]).encode("iso-2022-jp","ignore")
+                s = unicode(t.text).encode("iso-2022-jp","ignore")
                 outSentence = s + " " + td.strftime('%Y/%m/%d %H:%M:%S') + "\n\n" + outSentence
     except:
         traceback.print_exc()
@@ -41,7 +41,7 @@ def sendTmt(userName,toMail):
     outSentence = header + outSentence
     outSentence += "\n  Today's my twitter by showyou(twitter.com/showyou)\n"
     #print unicode(outSentence,"iso-2022-jp").encode("cp932")
-    userdata2 = jsonfile.read(homePath + "user/twdata_tmt")
+    userdata2 = jsonfile.read(homePath + "/user/twdata_tmt")
     user = userdata2["user"]
     passWord = userdata2["pass"]
     from_addr = user

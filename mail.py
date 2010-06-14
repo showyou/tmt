@@ -6,7 +6,7 @@ from email.Utils import formatdate
 
 if True:
 #if False:
-	homePath = "./"
+	homePath = "."
 else:
 	homePath = os.path.abspath(os.path.dirname(__file__)) 
 

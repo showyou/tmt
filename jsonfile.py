@@ -1,19 +1,20 @@
 #!/usr/bin/python
-# -*- coding: sjis -*-
-import json
+# -*- coding: utf-8 -*-
+import simplejson
 
-#jsonì«Ç›çûÇ›
+#json
 def read(filename):
 	try:
 		file = open(filename,'r')
-		mt = json.read(file.read())
+		mt = simplejson.loads(file.read())
 		file.close()
 	except:
 		mt = {}
 	return mt
 
+
 def write(filename,data):
 	file = open(filename,'w')
-	file.write(json.write(data))
+	file.write(simplejson.dumps(data))
 	file.close()
 	

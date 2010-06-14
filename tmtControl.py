@@ -4,13 +4,13 @@
 
 if True:
 #if False:
-	homePath = "./"
+	homePath = "."
 else:
-	homePath = "/home/yuki/tmt/"
+    homePath = os.path.abspath(os.path.dirname(__file__))
 
 import picklefile,tmt,datetime,tmtBot
 try:
-	userData = picklefile.read(homePath+"user/twdata_tmtMail")
+	userData = picklefile.read(homePath+"/user/twdata_tmtMail")
 except:
 	userData = []
 	
@@ -18,7 +18,7 @@ except:
 # userData は、({"user":user,"mail":mail,
 # "time":nexttime(次の定期更新時刻),"now":flag(直ぐに送信するか)},...)
 tmtBot.tmtBot(userData)
-picklefile.write(homePath+"user/twdata_tmtMail",userData)
+picklefile.write(homePath+"/user/twdata_tmtMail",userData)
 
 for u in userData:
 	
@@ -32,4 +32,4 @@ for u in userData:
 	tmt.sendTmt(u["user"],u["mail"])
 	u["time"] += datetime.timedelta(days=1)
 
-picklefile.write(homePath+"user/twdata_tmtMail",userData)
+picklefile.write(homePath+"/user/twdata_tmtMail",userData)
