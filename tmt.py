@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # 今日の自分の1日の行動を取得します
-import twitter3,jsonfile,traceback,toDate,datetime,mail
+import auth_api,jsonfile,traceback,toDate,datetime,mail
 import os
 
 #if True:
@@ -15,7 +15,7 @@ def sendTmt(userName,toMail):
     getUser = userName
     print sendTmt, userName, toMail
     userdata = jsonfile.read(homePath+"user/twdata_hama")
-    tw = twitter3.Twitter(userdata)
+    tw = auth_api.connect(userdata)
     latestTime = datetime.datetime.today()-datetime.timedelta(days=1)
     pageNum = 50
     
@@ -26,14 +26,14 @@ def sendTmt(userName,toMail):
         flag = True
         for i in range(pageNum):
             if flag != True : break
-            for t in tw.getWithUserPage(getUser,i+1):
-                td = toDate.toDate(t[2])
+            for t in tw.ユーザページ開く(getUser,i+1):
+                td = toDate.toDate(t["時刻とか"])
                 if td - latestTime < datetime.timedelta(days =0) :
                     flag = False
                     break
                 #if t[0].startswith("@") or t[0].startswith(".@"):
                 #	continue
-                s = unicode(t[1]).encode("iso-2022-jp","ignore")
+                s = unicode(t["発言とか"]).encode("iso-2022-jp","ignore")
                 outSentence = s + " " + td.strftime('%Y/%m/%d %H:%M:%S') + "\n\n" + outSentence
     except:
         traceback.print_exc()

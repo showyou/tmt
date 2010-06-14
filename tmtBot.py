@@ -12,14 +12,15 @@
 # D todays stop で 停止(削除)
 # D todays settime time でtimeに送ります。(15分単位の予定)
 # D todays get mail で今すぐ送ります
-import twitter3,jsonfile,datetime,toDate,picklefile
+import auth_api,jsonfile,datetime,toDate,picklefile
 
 
 if True:
 #if False:
 	homePath = "./"
 else:
-	homePath = "/home/yuki/tmt/"
+    homePath = os.path.abspath(os.path.dirname(__file__))
+
 
 def tmtBot(userData):
 
@@ -29,7 +30,7 @@ def tmtBot(userData):
 		latestTime = datetime.datetime.today()-datetime.timedelta(days=1)
 
 	authData = jsonfile.read(homePath+"user/twdata_todays")
-	tw = twitter3.Twitter(authData)
+	tw = auth_api.connect(authData)
 
 	analyzeDM(userData,tw,latestTime)
 	latestTime = datetime.datetime.today()
@@ -42,22 +43,22 @@ def analyzeDM(userData,tw,latest):
 	a = tw.getDM("todays")
 	a.reverse()
 	for x in a:
-		print x[0],
+		print x["ユーザー"],
 		print ":",
-		print x[1].encode("cp932")
+		print x["本文"].encode("cp932")
 		
 		# 最終更新時刻以前のログはカット
-		if toDate.toDate(x[2]) - latest < datetime.timedelta(days =0) :
+		if toDate.toDate(x["時刻"]) - latest < datetime.timedelta(days =0) :
 			print "pass"
 			continue;
-		xs = x[1].encode("utf-8")
+		xs = x["本文"].encode("utf-8")
 		cmd = xs.split()#xsをスペースで分割
 
 		#xs の解析で命令処理
 		flag = False
 		id = -1
 		for u in range(len(userData)):
-			if userData[u]["user"] == x[0]:
+			if userData[u]["user"] == x["ユーザ名"]:
 				flag = True
 				id = u
 				break
@@ -73,7 +74,7 @@ def analyzeDM(userData,tw,latest):
 				userData[id]["mail"] = cmd[1]
 			else:
 				d = {}
-				d["user"] = x[0]
+				d["user"] = x["ユーザ名"]
 				d["mail"] = cmd[1]
 				d["now"] = False
 				d["time"] = latest
@@ -94,7 +95,7 @@ def analyzeDM(userData,tw,latest):
 				userData[id]["now"] = True
 			else:
 				d = {}
-				d["user"] = x[0]
+				d["user"] = x["ユーザ名"]
 				d["mail"] = toMail
 				d["now"] = True
 				userData.append(d)
