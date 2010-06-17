@@ -4,11 +4,7 @@
 import auth_api,jsonfile,traceback,toDate3,datetime,mail
 import os
 
-#if True:
-if False:
-    homePath = "."
-else:
-    homePath = os.path.abspath(os.path.dirname(__file__))
+homePath = os.path.abspath(os.path.dirname(__file__))
 
 def sendTmt(userName,toMail):
     # 引数 ユーザ名 メールアドレス

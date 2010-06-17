@@ -1,12 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # twitter/tmtの監視とメールを送る処理を行う
+import os 
 
-if True:
-#if False:
-	homePath = "."
-else:
-    homePath = os.path.abspath(os.path.dirname(__file__))
+homePath = os.path.abspath(os.path.dirname(__file__))
 
 import picklefile,tmt,datetime,tmtBot
 try:
