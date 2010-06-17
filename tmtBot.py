@@ -15,11 +15,7 @@
 import auth_api,jsonfile,datetime,toDate3,picklefile
 import os
 
-#if True:
-if False:
-	homePath = "."
-else:
-    homePath = os.path.abspath(os.path.dirname(__file__))
+homePath = os.path.abspath(os.path.dirname(__file__))
 
 
 def tmtBot(userData):

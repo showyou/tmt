@@ -4,11 +4,8 @@ from email.MIMEText import MIMEText
 from email.Header import Header
 from email.Utils import formatdate
 
-if True:
-#if False:
-	homePath = "."
-else:
-	homePath = os.path.abspath(os.path.dirname(__file__)) 
+import os
+homePath = os.path.abspath(os.path.dirname(__file__)) 
 
 
 def create_message2(from_addr, to_addr, subject, body, encoding):
