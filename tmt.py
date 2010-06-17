@@ -22,7 +22,7 @@ def sendTmt(userName,toMail):
         flag = True
         for i in range(pageNum):
             if flag != True : break
-            print getUser, page
+            print getUser, pageNum
             for t in tw.user_timeline(getUser,page = i):
                 td = toDate3.toDate3(t.created_at)
                 if td - latestTime < datetime.timedelta(days =0) :
@@ -50,3 +50,6 @@ def sendTmt(userName,toMail):
     mail.send_via_gmail(user,passWord,from_addr, to_addr, msg)
 
 
+if __name__ == "__main__":
+    import sys
+    sendTmt(sys.argv[1], sys.argv[2])
