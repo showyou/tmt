@@ -53,8 +53,8 @@ def connect(consumer_token, consumer_secret, exec_path = "."):
 if __name__ == "__main__":
     conf = loadJSON("config.json")
     api = connect(conf["consumer_token"], conf["consumer_secret"])
-    api.update_status("ふんがー")
-    """for s in api.home_timeline():
+    for s in api.user_timeline("zauber"):
+        """for s in api.home_timeline():"""
         print s.author.screen_name, s.text, s.created_at + \
          datetime.timedelta(hours = 9)
-    """     
+         

@@ -26,6 +26,7 @@ def sendTmt(userName,toMail):
         flag = True
         for i in range(pageNum):
             if flag != True : break
+            print getUser, page
             for t in tw.user_timeline(getUser,page = i):
                 td = toDate3.toDate3(t.created_at)
                 if td - latestTime < datetime.timedelta(days =0) :
@@ -41,6 +42,7 @@ def sendTmt(userName,toMail):
     outSentence = header + outSentence
     outSentence += "\n  Today's my twitter by showyou(twitter.com/showyou)\n"
     #print unicode(outSentence,"iso-2022-jp").encode("cp932")
+    
     userdata2 = jsonfile.read(homePath + "/user/twdata_tmt")
     user = userdata2["user"]
     passWord = userdata2["pass"]
