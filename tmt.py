@@ -48,3 +48,7 @@ def sendTmt(userName,toMail):
     mail.send_via_gmail(user,passWord,from_addr, to_addr, msg)
 
 
+if __name__ == "__main__":
+    import sys
+    sendTmt(sys.argv[1], sys.argv[2])
+
