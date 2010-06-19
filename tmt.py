@@ -11,11 +11,15 @@ def sendTmt(userName,toMail):
     getUser = userName
     print sendTmt, userName, toMail
     conf = auth_api.loadJSON(homePath+"/config.json")
-    tw = auth_api.connect(conf["consumer_token"], conf["consumer_secret"])
-    latestTime = datetime.datetime.today()-datetime.timedelta(days=1)
+    tw = auth_api.connect(conf["consumer_token"], conf["consumer_secret"], homePath)
+
+    a = datetime.datetime.today()
+    timeMax = a - datetime.timedelta(hours = a.hour - 6, minutes = a.minute, seconds = a.second)
+    timeMin = timeMax - datetime.timedelta(days=1)
+	#latestTime = datetime.datetime.today()-datetime.timedelta(days=1)
     pageNum = 50
     
-    header = u"  :: Today's my twitter ::\n"+unicode(getUser,"utf-8")+u"さんの一日の発言です。\n\n"
+    header = u"  :: Today's my tweets ::\n"+unicode(getUser,"utf-8")+u"さんの一日の発言です。\n\n"
     header = header.encode("iso-2022-jp")
     outSentence = ""
     try:
@@ -25,9 +29,11 @@ def sendTmt(userName,toMail):
             print getUser, pageNum
             for t in tw.user_timeline(getUser,page = i):
                 td = toDate3.toDate3(t.created_at)
-                if td - latestTime < datetime.timedelta(days =0) :
+                if td - timeMin < datetime.timedelta(days =0):
                     flag = False
                     break
+                if td - timeMax > datetime.timedelta(days = 0):
+                    continue
                 #if t[0].startswith("@") or t[0].startswith(".@"):
                 #	continue
                 s = unicode(t.text).encode("iso-2022-jp","ignore")
@@ -36,7 +42,7 @@ def sendTmt(userName,toMail):
         traceback.print_exc()
     
     outSentence = header + outSentence
-    outSentence += "\n  Today's my twitter by showyou(twitter.com/showyou)\n"
+    outSentence += "\n  Today's my tweets by showyou(twitter.com/showyou)\n"
     #print unicode(outSentence,"iso-2022-jp").encode("cp932")
     
     userdata2 = jsonfile.read(homePath + "/user/twdata_tmt")
@@ -44,7 +50,7 @@ def sendTmt(userName,toMail):
     passWord = userdata2["pass"]
     from_addr = user
     to_addr = toMail
-    title = "today's my twitter:"+latestTime.strftime('%Y/%m/%d')
+    title = "today's my tweets:"+timeMin.strftime('%Y/%m/%d')
     title = title.encode("iso-2022-jp","ignore")
     msg = mail.create_message2(from_addr, to_addr, title, outSentence, 'ISO-2022-JP')
     mail.send_via_gmail(user,passWord,from_addr, to_addr, msg)
